@@ -1,10 +1,13 @@
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/jsx-no-target-blank */
 /* eslint "react/react-in-jsx-scope": "off" */
 /* globals React ReactDOM */
 /* eslint "react/jsx-no-undef": "off" */
-/* eslint "no-alert": "off" */
+
 const cNode = document.getElementById('contents');
 
 function ProductTable(props) {
+  // eslint-disable-next-line max-len
   const productRows = props.products.map(product => React.createElement(ProductRow, { key: product.id, product: product }));
   const borderedStyle = { border: '1px solid black', padding: 6 };
   return React.createElement(
@@ -56,11 +59,13 @@ class ProductAdd extends React.Component {
     e.preventDefault();
     const form = document.forms.productAdd;
     const product = {
-      name: form.name.value, price: form.price.value, category: form.category.value, imageURL: form.imageURL.value
+      // eslint-disable-next-line max-len
+      name: form.name.value, price: form.price.value ? form.price.value.substring(1) : "", category: form.category.value, imageURL: form.imageURL.value
     };
+    // eslint-disable-next-line react/destructuring-assignment
     this.props.createProduct(product);
     form.name.value = '';
-    form.price.value = '';
+    form.price.value = '$';
     form.category.value = '';
     form.imageURL.value = '';
   }
@@ -87,7 +92,7 @@ class ProductAdd extends React.Component {
           'div',
           null,
           'Price',
-          React.createElement('input', { type: 'text', name: 'price' })
+          React.createElement('input', { type: 'text', name: 'price', defaultValue: '$' })
         ),
         React.createElement(
           'div',
@@ -135,7 +140,7 @@ class ProductAdd extends React.Component {
         null,
         React.createElement(
           'button',
-          null,
+          { type: 'submit' },
           'Add Product'
         )
       )
@@ -214,6 +219,7 @@ class ProductList extends React.Component {
                 id
             }
           }`;
+    // eslint-disable-next-line no-unused-vars
     const response = await fetch(window.ENV.UI_API_ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
